@@ -13,15 +13,10 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* render;
 
-	bool isrunning = false;
+	bool isrunning = true;
 
 	Player* player;
 	std::list<Enemy*> enemies;
-
-	void handledEvents();
-	void Update();
-	void Render();
-	void Destroy();
 
 
 public:
@@ -29,7 +24,10 @@ public:
 	Game();
 	~Game();
 	void run();
+	void Render();
+	void handledEvents();
+	void Update();
 
-
+	void Destroy();
 };
 

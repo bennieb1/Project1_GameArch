@@ -2,22 +2,34 @@
 #include <iostream>
 
 
-Player::Player(SDL_Renderer* render) {
+Player::Player(SDL_Renderer* renderer, const  std::string& imagePath) {
+    // Initialize rect, lives, etc.
+    rect.x = 400; // Example initialization
+    rect.y = 300;
+    rect.w = 50;
+    rect.h = 50;
+    lives = 3;
 
-	SDL_Surface* player = IMG_Load("C:\\Users\\bennieb\\Documents\\GameArchitecture\\Project1\\Project1\\prog50049.project1.resources\\Mainplayer\\player.png");
-
-	if (player == NULL) {
-	
-		std::cout << "Unable to load image!SDL_image Error " << IMG_GetError() << std::endl;
-
-		text = nullptr;
-
-	}
-	else {
-		text = SDL_CreateTextureFromSurface(render, player);
-		SDL_FreeSurface(player);
-	}
+    // Load the texture using SDL_image
+    texture = IMG_LoadTexture(renderer, imagePath.c_str());
+    if (!texture) {
+        // Log error or handle failure
+        SDL_Log("Failed to load texture: %s", IMG_GetError());
+    }
 }
-SDL_Texture* Player::getTexture() {
-	return text;
+
+Player::~Player() {
+    SDL_DestroyTexture(texture);
+}
+
+void Player::handleEvent(SDL_Event& event) {
+    //... [same as previous]
+}
+
+void Player::update() {
+    //... [same as previous]
+}
+
+void Player::render(SDL_Renderer* renderer) {
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
 }

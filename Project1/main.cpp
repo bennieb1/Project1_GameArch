@@ -7,7 +7,11 @@
 int main(int argc, char* args[])
 {
     Game* game = new Game();
-    game;
+    bool running = true;
+    while (running) {
+        game->Render();
+    }
+  
     return 0;
 }
 
