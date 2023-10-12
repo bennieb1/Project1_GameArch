@@ -151,15 +151,47 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Astroid.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Astroid.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameUI.h" />
     <ClInclude Include="Player.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Asteroids\meteorBig.png" />
+    <Image Include="resources\Asteroids\meteorSmall.png" />
+    <Image Include="resources\Background\backgroundColor.png" />
+    <Image Include="resources\Background\nebula.png" />
+    <Image Include="resources\Background\speedLine.png" />
+    <Image Include="resources\Background\starBackground.png" />
+    <Image Include="resources\Background\starBig.png" />
+    <Image Include="resources\Background\starSmall.png" />
+    <Image Include="resources\Enemies\enemyShip.png" />
+    <Image Include="resources\Enemies\enemyUFO.png" />
+    <Image Include="resources\Enemies\laserRed.png" />
+    <Image Include="resources\Enemies\laserRedShot.png" />
+    <Image Include="resources\Hud\life.png" />
+    <Image Include="resources\Mainplayer\laserGreen.png" />
+    <Image Include="resources\Mainplayer\laserGreenShot.png" />
+    <Image Include="resources\Mainplayer\player.png" />
+    <Image Include="resources\Mainplayer\playerDamaged.png" />
+    <Image Include="resources\Mainplayer\playerDamaged_2.png" />
+    <Image Include="resources\Misc\boom3_0.png" />
+    <Image Include="resources\Misc\exp2_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\Hud\cour.ttf" />
+    <Font Include="resources\Hud\courbd.ttf" />
+    <Font Include="resources\Hud\courbi.ttf" />
+    <Font Include="resources\Hud\couri.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Astroids">
+      <UniqueIdentifier>{c92b9cad-b46b-4b1f-8f33-a1779598f793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Background">
+      <UniqueIdentifier>{c1f1f576-bf4a-4842-a3ba-95aac673d55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Enemies">
+      <UniqueIdentifier>{fe0f1e16-e2e0-4e90-913e-aa3e4d5bdb56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Hud">
+      <UniqueIdentifier>{2bb1ee97-a1b1-44d3-b796-2e295fd7c8fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\MainPlayer">
+      <UniqueIdentifier>{b273853e-3540-4fa1-b20a-de021c6bed83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Misc.">
+      <UniqueIdentifier>{984900f9-583c-440f-86f6-18046acb4040}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,6 +45,12 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Astroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -38,5 +62,87 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Astroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Asteroids\meteorBig.png">
+      <Filter>Resource Files\Astroids</Filter>
+    </Image>
+    <Image Include="resources\Asteroids\meteorSmall.png">
+      <Filter>Resource Files\Astroids</Filter>
+    </Image>
+    <Image Include="resources\Background\backgroundColor.png">
+      <Filter>Resource Files\Background</Filter>
+    </Image>
+    <Image Include="resources\Background\nebula.png">
+      <Filter>Resource Files\Background</Filter>
+    </Image>
+    <Image Include="resources\Background\speedLine.png">
+      <Filter>Resource Files\Background</Filter>
+    </Image>
+    <Image Include="resources\Background\starBackground.png">
+      <Filter>Resource Files\Background</Filter>
+    </Image>
+    <Image Include="resources\Background\starBig.png">
+      <Filter>Resource Files\Background</Filter>
+    </Image>
+    <Image Include="resources\Background\starSmall.png">
+      <Filter>Resource Files\Background</Filter>
+    </Image>
+    <Image Include="resources\Enemies\enemyShip.png">
+      <Filter>Resource Files\Enemies</Filter>
+    </Image>
+    <Image Include="resources\Enemies\enemyUFO.png">
+      <Filter>Resource Files\Enemies</Filter>
+    </Image>
+    <Image Include="resources\Enemies\laserRed.png">
+      <Filter>Resource Files\Enemies</Filter>
+    </Image>
+    <Image Include="resources\Enemies\laserRedShot.png">
+      <Filter>Resource Files\Enemies</Filter>
+    </Image>
+    <Image Include="resources\Hud\life.png">
+      <Filter>Resource Files\Hud</Filter>
+    </Image>
+    <Image Include="resources\Mainplayer\playerDamaged_2.png">
+      <Filter>Resource Files\MainPlayer</Filter>
+    </Image>
+    <Image Include="resources\Mainplayer\playerDamaged.png">
+      <Filter>Resource Files\MainPlayer</Filter>
+    </Image>
+    <Image Include="resources\Mainplayer\player.png">
+      <Filter>Resource Files\MainPlayer</Filter>
+    </Image>
+    <Image Include="resources\Mainplayer\laserGreenShot.png">
+      <Filter>Resource Files\MainPlayer</Filter>
+    </Image>
+    <Image Include="resources\Mainplayer\laserGreen.png">
+      <Filter>Resource Files\MainPlayer</Filter>
+    </Image>
+    <Image Include="resources\Misc\exp2_0.png">
+      <Filter>Resource Files\Misc.</Filter>
+    </Image>
+    <Image Include="resources\Misc\boom3_0.png">
+      <Filter>Resource Files\Misc.</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\Hud\cour.ttf">
+      <Filter>Resource Files\Hud</Filter>
+    </Font>
+    <Font Include="resources\Hud\courbd.ttf">
+      <Filter>Resource Files\Hud</Filter>
+    </Font>
+    <Font Include="resources\Hud\courbi.ttf">
+      <Filter>Resource Files\Hud</Filter>
+    </Font>
+    <Font Include="resources\Hud\couri.ttf">
+      <Filter>Resource Files\Hud</Filter>
+    </Font>
   </ItemGroup>
 </Project>
