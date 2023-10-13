@@ -3,21 +3,21 @@
 
 
 Player::Player(SDL_Renderer* renderer, const  std::string& imagePath, const std::string& bulletTexture) {
-    // Initialize rect, lives, etc.
-    rect.x = 400; // Example initialization
+    
+    rect.x = 400; 
     rect.y = 300;
     rect.w = 50;
     rect.h = 50;
     lives = 3;
     speed = 10;
 
-    // Load the texture using SDL_image
+   
     texture = IMG_LoadTexture(renderer, imagePath.c_str());
     if (!texture) {
-        // Log error or handle failure
+       
         SDL_Log("Failed to load texture: %s", IMG_GetError());
     }
-    bullets = IMG_LoadTexture(renderer, bulletTexture.c_str());  // Load bullet texture
+    bullets = IMG_LoadTexture(renderer, bulletTexture.c_str());  
     if (!bullets) {
         SDL_Log("Failed to load bullet texture: %s", IMG_GetError());
     }
@@ -44,7 +44,7 @@ void Player::handleEvent(SDL_Event& e) {
 
 void Player::update(float DeltaTime) {
     for (auto& bulletRect : bullet) {
-        bulletRect.y -= 10;  // Move bullets upwards by 10 pixels
+        bulletRect.y -= 10;  
     }
 }
 

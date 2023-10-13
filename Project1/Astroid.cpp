@@ -5,10 +5,10 @@
 
 Astroid::Astroid(SDL_Renderer* render, const std::string& astroidPath) {
 
-    postX = 600;  // roughly middle of screen
+    postX = 600;  
     postY = 10;
     IMG_Init(IMG_INIT_PNG);
-    // Load the image into a surface
+   
 
      SDL_Surface* asteroidSurface = IMG_Load(astroidPath.c_str());
     if (!asteroidSurface) {
@@ -45,7 +45,7 @@ void Astroid::Render(SDL_Renderer* renderer) {
     rect.x = postX;
     rect.y = postY;
     SDL_RenderCopy(renderer, astroid, NULL, &rect);
-    //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+   
 }
 
 SDL_Rect Astroid::GetRect() {
