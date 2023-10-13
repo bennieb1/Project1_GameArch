@@ -14,7 +14,7 @@ Game::Game() {
     lastFrameTime = SDL_GetTicks();
     gameU = new GameUI("resources\\Hud\\cour.ttf");
 
-    player = new Player(render, std::string("resources\\Mainplayer\\player.png"), std::string("resources\\Mainplayer\\laserGreen.png"));
+    player = new Player(render, "player.JSON");
       
 
 }
@@ -78,10 +78,10 @@ void Game::handledEvents() {
 }
 void Game::spawnAsteroid() {
    
-    Astroid* newAsteroid = new Astroid(render, "resources\\Asteroids\\meteorBig.png");
+    Astroid* newAsteroid = new Astroid(render, "meteorSmall.JSON");
     astroids.push_back(newAsteroid);
 
-    Astroid* newAsteroids = new Astroid(render, "resources\\Asteroids\\meteorSmall.png");
+    Astroid* newAsteroids = new Astroid(render, "metorBig.JSON");
     astroids.push_back(newAsteroids);
 
 

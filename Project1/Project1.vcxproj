@@ -155,6 +155,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="json.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +194,11 @@
     <Font Include="resources\Hud\courbd.ttf" />
     <Font Include="resources\Hud\courbi.ttf" />
     <Font Include="resources\Hud\couri.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="meteorSmall.json" />
+    <None Include="metorBig.json" />
+    <None Include="player.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

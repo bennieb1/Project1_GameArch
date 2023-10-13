@@ -6,6 +6,9 @@
 #include <SDL_image.h>
 #include <string>
 #include <list>
+#include <fstream>
+#include "json.hpp"
+
 class Astroid
 {
 
@@ -14,7 +17,7 @@ private:
 	SDL_Rect rect;
 	SDL_Texture* astroid;
 
-
+	std::string astroidPath;
 	float postX;
 	float postY;
 	float speedX;
@@ -28,7 +31,7 @@ public:
 	void Update(float TimeDelta);
 	void Render(SDL_Renderer* rend);
 	SDL_Rect GetRect();
-
+	void Load(const std::string& filepath);
 
 
 

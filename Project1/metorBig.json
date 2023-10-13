@@ -1,0 +1,7 @@
+{
+    "astroid_path": "resources\\Asteroids\\meteorBig.png",
+    "speed": {
+        "x": 0.0,
+        "y": 150.0
+    }
+}

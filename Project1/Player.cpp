@@ -2,15 +2,9 @@
 #include <iostream>
 
 
-Player::Player(SDL_Renderer* renderer, const  std::string& imagePath, const std::string& bulletTexture) {
+Player::Player(SDL_Renderer* renderer, const std::string& filepath) {
     
-    rect.x = 400; 
-    rect.y = 300;
-    rect.w = 50;
-    rect.h = 50;
-    lives = 3;
-    speed = 10;
-
+    Load(filepath);
    
     texture = IMG_LoadTexture(renderer, imagePath.c_str());
     if (!texture) {
@@ -54,4 +48,24 @@ void Player::render(SDL_Renderer* renderer) {
     for (const auto& bulletRect : bullet) {
         SDL_RenderCopy(renderer, bullets, NULL, &bulletRect);
     }
+}
+
+void Player::Load(const std::string& filepath) {
+
+
+    std::ifstream inputStream(filepath);
+    std::string str((std::istreambuf_iterator<char>(inputStream)), std::istreambuf_iterator<char>());
+    json::JSON document = json::JSON::Load(str);
+
+
+    rect.x = document["initial_position"]["x"].ToInt();
+    rect.y = document["initial_position"]["y"].ToInt();
+    rect.w = document["size"]["width"].ToInt();
+    rect.h = document["size"]["height"].ToInt();
+    lives = document["lives"].ToInt();
+    speed = document["speed"].ToInt();
+    imagePath = document["image_path"].ToString();
+    bulletTexture = document["bullet_texture"].ToString();
+
+
 }
