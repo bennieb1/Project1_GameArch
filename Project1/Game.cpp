@@ -93,10 +93,16 @@ void Game::scoreAdded(int earned) {
     gameU->ScoreAdded(earned);
 
 }
-void Game::lifeLost(int lives) {
+void Game::lifeLost(int livesLost) {
+    std::cout << "lifeLost called. Current lives: " << lives << ", Lives to lose: " << livesLost << std::endl;
 
-    
-    lives--;  
+    lives -= livesLost;
+    if (lives <= 0) {
+        lives = 3; // This will reset the game every time. You may want a game over state.
+        score = 0;  // Reset score to 0
+        gameU->setScore(score); // ... rest of your code ...
+    }
+    player->Destroy();
    
     gameU->setLife(lives);
 }

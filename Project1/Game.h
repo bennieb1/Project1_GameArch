@@ -22,7 +22,7 @@ private:
 	GameUI* gameU;
 	Player* player;
 	std::list<Enemy*> enemies;
-	int lives = 3;
+	int lives = 3 ;
 	int score;
 
 public:

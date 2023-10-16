@@ -8,7 +8,9 @@ GameUI::GameUI(const std::string& fontPath) {
 	}
 	score = 0;
 	highScore = 0;
-	lives = 5;
+	lives = 3;
+
+
 
 }
 
@@ -16,6 +18,9 @@ GameUI::~GameUI() {
 	TTF_CloseFont(Font);
 }
 
+void GameUI::setScore(int newScore) {
+	score = newScore;
+}
 
 void GameUI::ScoreAdded(int points) {
 
@@ -47,9 +52,24 @@ void GameUI::Render(SDL_Renderer* rend) {
 	SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(rend, scoreSurface);
 	SDL_Rect scoreRect = { 10, 10, scoreSurface->w, scoreSurface->h };
 	SDL_RenderCopy(rend, scoreTexture, NULL, &scoreRect);
+	
+	SDL_Surface* livesSurface = TTF_RenderText_Solid(Font, livesText.c_str(), { 255, 255, 255 });
+	SDL_Texture* livesTexture = SDL_CreateTextureFromSurface(rend, livesSurface);
+	SDL_Rect livesRect = { 10, 30, livesSurface->w, livesSurface->h };
+	SDL_RenderCopy(rend, livesTexture, NULL, &livesRect);
+
+	SDL_Surface* highScoreSurface = TTF_RenderText_Solid(Font, highScoreText.c_str(), { 255, 255, 255 });
+	SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(rend, highScoreSurface);
+	SDL_Rect highScoreRect = { 10, 50, highScoreSurface->w, highScoreSurface->h };
+	SDL_RenderCopy(rend, highScoreTexture, NULL, &highScoreRect);
 
 	SDL_FreeSurface(scoreSurface);
 	SDL_DestroyTexture(scoreTexture);
 
 
+	SDL_FreeSurface(livesSurface);
+	SDL_DestroyTexture(livesTexture);
+
+	SDL_FreeSurface(highScoreSurface);
+	SDL_DestroyTexture(highScoreTexture);
 }

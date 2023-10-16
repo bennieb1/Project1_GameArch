@@ -20,7 +20,7 @@ public:
 
 	GameUI(const std::string& fontPath);
 	~GameUI();
-
+	void setScore(int newScore);
 	void ScoreAdded(int points);
 	void setLife(int life);
 	void Render(SDL_Renderer* rend);

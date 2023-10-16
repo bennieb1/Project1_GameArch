@@ -4,7 +4,10 @@
 
 Player::Player(SDL_Renderer* renderer, const std::string& filepath) {
     
-    Load(filepath);
+    Load(filepath);   
+    
+    invulnerable = false;
+    invulnerabilityTime = 0.0f;
    
     texture = IMG_LoadTexture(renderer, imagePath.c_str());
     if (!texture) {
@@ -22,12 +25,10 @@ Player::~Player() {
 }
 
 void Player::handleEvent(SDL_Event& e) {
+
+
     if (e.type == SDL_KEYDOWN) {
         switch (e.key.keysym.sym) {
-        case SDLK_w: rect.y -= speed; break;
-        case SDLK_s: rect.y += speed; break;
-        case SDLK_a: rect.x -= speed; break;
-        case SDLK_d: rect.x += speed; break;
         case SDLK_SPACE:
             bullet.push_back({ rect.x + rect.w / 2, rect.y, 5, 10 });
             break;
@@ -37,8 +38,33 @@ void Player::handleEvent(SDL_Event& e) {
 }
 
 void Player::update(float DeltaTime) {
+
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+    if (currentKeyStates[SDL_SCANCODE_W]) {
+        rect.y -= speed;
+    }
+    if (currentKeyStates[SDL_SCANCODE_S]) {
+        rect.y += speed;
+    }
+    if (currentKeyStates[SDL_SCANCODE_A]) {
+        rect.x -= speed;
+    }
+    if (currentKeyStates[SDL_SCANCODE_D]) {
+        rect.x += speed;
+    }
     for (auto& bulletRect : bullet) {
         bulletRect.y -= 10;  
+    }
+
+    if (invulnerable) {
+
+        invulnerabilityTime -= DeltaTime;
+
+        if (invulnerabilityTime <= 0) {
+            invulnerable = false;
+            invulnerabilityTime = 0;
+        }
     }
 }
 
@@ -48,6 +74,16 @@ void Player::render(SDL_Renderer* renderer) {
     for (const auto& bulletRect : bullet) {
         SDL_RenderCopy(renderer, bullets, NULL, &bulletRect);
     }
+}
+
+bool Player::isActive() const {
+
+    return active;
+}
+
+void Player::setInvulnerable() {
+    invulnerable = true;
+    invulnerabilityTime = maxInvulnerabilityTime;
 }
 
 void Player::Load(const std::string& filepath) {
@@ -66,6 +102,12 @@ void Player::Load(const std::string& filepath) {
     speed = document["speed"].ToInt();
     imagePath = document["image_path"].ToString();
     bulletTexture = document["bullet_texture"].ToString();
+
+
+}
+void Player::Destroy() {
+
+    active = false;
 
 
 }
