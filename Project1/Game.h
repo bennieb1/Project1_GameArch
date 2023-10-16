@@ -22,8 +22,8 @@ private:
 	GameUI* gameU;
 	Player* player;
 	std::list<Enemy*> enemies;
-	
-
+	int lives = 3;
+	int score;
 
 public:
 
@@ -36,7 +36,7 @@ public:
 	void scoreAdded(int earned);
 	void lifeLost(int lives);
 	void Update(float DeltaTime);
-
+	bool isColliding(SDL_Rect a, SDL_Rect b);
 	void Destroy();
 };
 
