@@ -14,12 +14,12 @@
 class Player
 {
 private:
-   
+
     int lives = 3;
-    int speed; 
+    int speed;
     bool active;
     SDL_Texture* texture;  // Texture for the player
-    SDL_Texture* bullets;    
+    SDL_Texture* bullets;
     std::string imagePath;
     std::string bulletTexture;
 

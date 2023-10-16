@@ -5,20 +5,20 @@
 
 Astroid::Astroid(SDL_Renderer* render, const std::string& filepath) {
 
-    postX = 600;  
+    postX = 600;
     postY = 10;
     IMG_Init(IMG_INIT_PNG);
     Load(filepath);
 
-     astroid = IMG_LoadTexture(render, astroidPath.c_str());
+    astroid = IMG_LoadTexture(render, astroidPath.c_str());
     if (!astroid) {
         std::cout << "Error loading asteroid surface: " << SDL_GetError() << std::endl;
         return;
     }
 
-   
+
     SDL_QueryTexture(astroid, NULL, NULL, &rect.w, &rect.h);
-   
+
     postX = rand() % (1240 - rect.w);
     postY = -15;
 
@@ -45,7 +45,7 @@ void Astroid::Render(SDL_Renderer* renderer) {
     rect.x = postX;
     rect.y = postY;
     SDL_RenderCopy(renderer, astroid, NULL, &rect);
-   
+
 }
 
 SDL_Rect Astroid::GetRect() {

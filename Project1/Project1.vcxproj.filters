@@ -155,5 +155,6 @@
     <None Include="player.json" />
     <None Include="meteorSmall.json" />
     <None Include="metorBig.json" />
+    <None Include="EnemyA.json" />
   </ItemGroup>
 </Project>

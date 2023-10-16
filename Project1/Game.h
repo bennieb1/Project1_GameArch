@@ -11,7 +11,7 @@
 
 class Game
 {
-private: 
+private:
 
 	SDL_Window* window;
 	SDL_Renderer* render;
@@ -21,8 +21,9 @@ private:
 	Astroid* astroid;
 	GameUI* gameU;
 	Player* player;
+	Enemy* enemy;
 	std::list<Enemy*> enemies;
-	int lives = 3 ;
+	int lives = 3;
 	int score;
 
 public:
@@ -33,6 +34,7 @@ public:
 	void Render();
 	void handledEvents();
 	void spawnAsteroid();
+	void SpawnEnemy();
 	void scoreAdded(int earned);
 	void lifeLost(int lives);
 	void Update(float DeltaTime);
