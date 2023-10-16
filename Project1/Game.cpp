@@ -142,7 +142,10 @@ void Game::Update(float DeltaTime) {
         }
     }
 
-
+   
+    enemy->UpdatePositionRandomly(DeltaTime);
+        
+   
 
 
 

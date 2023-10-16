@@ -18,6 +18,8 @@ Player::Player(SDL_Renderer* renderer, const std::string& filepath) {
     if (!bullets) {
         SDL_Log("Failed to load bullet texture: %s", IMG_GetError());
     }
+
+
 }
 
 Player::~Player() {

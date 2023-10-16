@@ -18,6 +18,8 @@ private:
     std::string bulletTexture;
     float speedY;
     int health;
+    float positionX;
+    float positionY;
 
 public:
     Enemy(SDL_Renderer* renderer, const std::string& filepath, int initHealth);
@@ -30,6 +32,9 @@ public:
     bool isColliding(SDL_Rect centerA, SDL_Rect centerB);
     void TakeDamage(int damage);
      void OnBulletHit();
+     void UpdatePositionRandomly(float deltaTime);
+     float GetPositionX() const { return positionX; }
+     float GetPositionY() const { return positionY; }
    void Load(const std::string& filepath) ;
     SDL_Rect GetRect() const;
 

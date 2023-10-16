@@ -23,6 +23,7 @@ private:
 	Player* player;
 	Enemy* enemy;
 	std::list<Enemy*> enemies;
+	std::list<Enemy> badGuys;
 	int lives = 3;
 	int score;
 

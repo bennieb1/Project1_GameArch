@@ -17,8 +17,11 @@ Enemy::Enemy(SDL_Renderer* renderer, const std::string& filepath, int initHealth
     SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 
     // Initial position
-    rect.x = 400; // You can change this
+    rect.x = 500; // You can change this
     rect.y = 200; // You can change this
+
+    positionX = 400;
+    positionY = 200;
 }
 
 
@@ -60,6 +63,20 @@ void Enemy::OnBulletHit()  {
     }
 }SDL_Rect Enemy::GetRect() const {
     return rect;
+}
+
+void Enemy::UpdatePositionRandomly(float deltaTime) {
+    // Generate random X and Y coordinates within a specified range
+
+    float minX = 10; // Minimum X-coordinate
+    float maxX = 900; // Maximum X-coordinate
+    float minY = 10; // Minimum Y-coordinate
+    float maxY = 700; // Maximum Y-coordinate
+
+    rect.x += (rand() % (int)((maxX - minX) + 1) + minX) * deltaTime * 0.5f; // Reduce speed by half
+    rect.y += (rand() % (int)((maxY - minY) + 1) + minY) * deltaTime * 0.5f; // Reduce speed by half
+
+    
 }
 
 void Enemy::Load(const std::string& filepath) {
