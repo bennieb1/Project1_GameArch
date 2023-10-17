@@ -2,23 +2,27 @@
 
 
 
-Enemy::Enemy(SDL_Renderer* renderer, const std::string& filepath, int initHealth)  {
+Enemy::Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHealth)  {
     health = initHealth;
 
     IMG_Init(IMG_INIT_PNG);
     // Load the enemy texture
-    Load(filepath);
+    Load(texturePath);
     texture = IMG_LoadTexture(renderer, imagePath.c_str());
     if (!texture) {
         std::cout << "Error loading enemy texture: " << SDL_GetError() << std::endl;
         return;
     }
+    bullet = IMG_LoadTexture(renderer, bulletTexture.c_str());
+    if (!bullet) {
+        SDL_Log("Failed to load bullet texture: %s", IMG_GetError());
+    }
 
     SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 
     // Initial position
-    rect.x = 500; // You can change this
-    rect.y = 200; // You can change this
+    rect.x = 700; // You can change this
+    rect.y = 100; // You can change this
 
     positionX = 400;
     positionY = 200;
@@ -31,7 +35,12 @@ Enemy::~Enemy() {
 
 void Enemy::Render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+    for (const auto& bulletRect : bulleta) {
+        SDL_RenderCopy(renderer, bullet, NULL, &bulletRect);
+    }
 }
+
 
 
 
@@ -56,26 +65,80 @@ void Enemy::TakeDamage(int damage) {
         std::cout << "Enemy health: " << health << std::endl;
     }
 }
-void Enemy::OnBulletHit()  {
+bool Enemy::OnBulletHit()  {
     TakeDamage(1);
     if (health <= 0) {
-     
+        std::cout << "Enemy destroyed!" << std::endl;
+        return true;
     }
-}SDL_Rect Enemy::GetRect() const {
+    return false;
+}
+
+void Enemy::Shoot() {
+    int bulletStartX = rect.x + rect.w / 2; // Center of the enemy on X-axis
+    int bulletStartY = rect.y + rect.h;     // Bottom of the enemy, where bullet will start
+   // Enemy* newBullet = new Enemy(renderer, bulletTexture);
+   // bullets.push_back(newBullet);
+}
+
+void Enemy::Move(int distX, int distY) {
+
+    rect.x += distX;
+    rect.y += distY;
+
+}
+
+void Enemy::UpdateAndRenderBullets() {
+    for (auto it = bullets.begin(); it != bullets.end(); ) {
+        (*it)->Move(0, 5); // Move bullet downwards
+
+        if ((*it)->GetRect().y > SCREEN_HEIGHT) { // If the bullet is out of the screen
+            delete* it;
+            it = bullets.erase(it);
+        }
+        else {
+            (*it)->Render(renderer); // Render the bullet
+            ++it;
+        }
+    }
+}
+
+
+SDL_Rect Enemy::GetRect() const {
     return rect;
+}
+void Enemy::SetRandomTopPosition() {
+    rect.x = rand() % (SCREEN_WIDTH - rect.w); // random position between 0 and (SCREEN_WIDTH - width of enemy)
+    rect.y = -rect.h; // just above the screen
 }
 
 void Enemy::UpdatePositionRandomly(float deltaTime) {
     // Generate random X and Y coordinates within a specified range
 
-    float minX = 10; // Minimum X-coordinate
-    float maxX = 900; // Maximum X-coordinate
+    float minX = -5; // Maximum leftward movement
+    float maxX = 5;// Maximum X-coordinate
     float minY = 10; // Minimum Y-coordinate
     float maxY = 700; // Maximum Y-coordinate
 
-    rect.x += (rand() % (int)((maxX - minX) + 1) + minX) * deltaTime * 0.5f; // Reduce speed by half
-    rect.y += (rand() % (int)((maxY - minY) + 1) + minY) * deltaTime * 0.5f; // Reduce speed by half
+    rect.x += (rand() % (int)((maxX - minX) + 1) + minX) * deltaTime; // Reduce speed by half
+    float downwardSpeed = 200; // This is the speed at which the enemy moves downward. Adjust as needed.
+    rect.y += downwardSpeed * deltaTime;
 
+    // Ensure the enemy doesn't move off the left or right of the screen
+    if (rect.x < 0) rect.x = 0;
+    if (rect.x + rect.w > SCREEN_WIDTH) rect.x = SCREEN_WIDTH - rect.w;
+
+    if (rect.y + rect.h > SCREEN_HEIGHT) {
+        rect.y = -rect.h; // Position it just above the screen
+        rect.x = rand() % (SCREEN_WIDTH - rect.w); // Randomize the x position
+    }
+    if (isBullet) {
+        // Movement logic for bullet
+        rect.y += bulletSpeed * deltaTime;
+    }
+    else {
+        // Existing enemy movement logic...
+    }
     
 }
 

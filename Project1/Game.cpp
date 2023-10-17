@@ -16,12 +16,25 @@ Game::Game() {
 
     player = new Player(render, "player.JSON");
 
-    enemy = new Enemy(render, "EnemyA.JSON",3);
+   // enemies.push_back(new Enemy(render, "EnemyA.JSON", 3));
+   // enemies.push_back(new Enemy(render, "EnemyB.JSON", 5));
+
+    Enemy* newEnemy = new Enemy(render, "EnemyA.JSON", 3 );
+    newEnemy->SetRandomTopPosition();
+    enemies.push_back(newEnemy);
+
+    Enemy* newerEnemy = new Enemy(render, "EnemyB.JSON", 5 );
+    newerEnemy->SetRandomTopPosition();
+    enemies.push_back(newerEnemy);
 }
 Game::~Game() {
 
     delete gameU;
     delete player;
+
+    for (auto& enemy : enemies) {
+        delete enemy;
+    }
     SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
     IMG_Quit();
@@ -36,7 +49,10 @@ void Game::Render() {
         asteroid->Render(render);
     }
 
-    enemy->Render(render);
+    for (auto& e : enemies) {
+        e->Render(render);
+    }
+
 
     gameU->Render(render);
     SDL_RenderPresent(render);
@@ -59,7 +75,7 @@ void Game::run() {
         handledEvents();
         Update(deltaTime);
         Render();
-        SpawnEnemy();
+       // SpawnEnemy();
 
 
         lastFrameTime = currentFrameTime;
@@ -97,13 +113,17 @@ void Game::spawnAsteroid() {
 
 }
 
-void Game::SpawnEnemy() {
-
-    Enemy* newEnemy = new Enemy(render, "EnemyA.json",3);
-    enemies.push_back(newEnemy);
-
-
-}
+//void Game::SpawnEnemy() {
+//
+//    Enemy* newEnemy = new Enemy(render, "EnemyA.JSON", 3);
+//    newEnemy->SetRandomTopPosition();
+//    enemies.push_back(newEnemy);
+//
+//    Enemy* newerEnemy = new Enemy(render, "EnemyB.JSON", 5);
+//    newerEnemy->SetRandomTopPosition();
+//    enemies.push_back(newerEnemy);
+//
+//}
 
 void Game::scoreAdded(int earned) {
 
@@ -143,10 +163,17 @@ void Game::Update(float DeltaTime) {
     }
 
    
-    enemy->UpdatePositionRandomly(DeltaTime);
-        
-   
 
+    for (auto& enemy : enemies) {
+        enemy->Render(render); // This renders the enemy
+        enemy->Shoot();
+        enemy->UpdateAndRenderBullets(); // This updates and renders the bullets for each enemy
+    }
+   
+    for (auto& enemy : enemies) {
+        enemy->UpdatePositionRandomly(DeltaTime);
+        // Check collisions and other logic specific to each enemy
+    }
 
 
     for (auto& bullet : player->bullet) {
@@ -166,7 +193,70 @@ void Game::Update(float DeltaTime) {
         asteroid->Update(DeltaTime);
     }
 
+    for (auto bulletIt = player->bullet.begin(); bulletIt != player->bullet.end(); ) {
+        bool bulletDeleted = false;
 
+        for (auto enemyIt = enemies.begin(); enemyIt != enemies.end(); ) {
+            if (isColliding(*bulletIt, (*enemyIt)->GetRect())) {
+                bool isEnemyDestroyed = (*enemyIt)->OnBulletHit();
+                bulletIt = player->bullet.erase(bulletIt);
+                bulletDeleted = true;
+
+                if (isEnemyDestroyed) {
+                    scoreAdded(50);
+                    delete* enemyIt;  // Delete the enemy
+                    enemyIt = enemies.erase(enemyIt);
+                    destroyedEnemies++;
+                }
+                else {
+                    ++enemyIt;
+                }
+                break;  // break out of the enemy loop if a bullet hit an enemy
+            }
+            else {
+                ++enemyIt;
+            }
+        }
+
+        if (!bulletDeleted) {
+            ++bulletIt;
+        }
+    }
+
+    // Then, check collisions between player and enemies
+    for (auto enemyIt = enemies.begin(); enemyIt != enemies.end(); ) {
+        if (isColliding(player->GetRect(), (*enemyIt)->GetRect())) {
+            // Handle the collision. This could be player health decrease, game over logic, etc.
+            lifeLost(1);
+            scoreAdded(50);
+
+            delete* enemyIt;
+            enemyIt = enemies.erase(enemyIt);
+            destroyedEnemies++;
+        }
+        else {
+            ++enemyIt;
+        }
+    }
+
+    // Finally, check if 2 enemies have been destroyed and respawn new ones
+    if (destroyedEnemies == 2) {
+        // Reset the counter
+        destroyedEnemies = 0;
+
+        // Spawn 2 new enemies
+        Enemy* newEnemy1 = new Enemy(render, "EnemyA.JSON", 3 );
+        newEnemy1->SetRandomTopPosition();
+        enemies.push_back(newEnemy1);
+
+        Enemy* newEnemy2 = new Enemy(render, "EnemyB.JSON", 5);
+        newEnemy2->SetRandomTopPosition();
+        enemies.push_back(newEnemy2);
+    }
+
+
+
+  
 }
 
 bool Game::isColliding(SDL_Rect centerA, SDL_Rect centerB) {

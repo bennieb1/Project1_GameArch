@@ -22,6 +22,7 @@ private:
     SDL_Texture* bullets;
     std::string imagePath;
     std::string bulletTexture;
+  
 
 public:
 
@@ -34,6 +35,7 @@ public:
     ~Player();
     void handleEvent(SDL_Event& event);
     void update(float DeltaTime);
+    SDL_Rect GetRect() const;
     void render(SDL_Renderer* renderer);
     bool isActive() const;
     void setInvulnerable();

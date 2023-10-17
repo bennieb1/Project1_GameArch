@@ -54,6 +54,9 @@
     <ClCompile Include="json.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,5 +162,7 @@
     <None Include="meteorSmall.json" />
     <None Include="metorBig.json" />
     <None Include="EnemyA.json" />
+    <None Include="EnemyB.json" />
+    <None Include="EnemyBulletA.JSON" />
   </ItemGroup>
 </Project>

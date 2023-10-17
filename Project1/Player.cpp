@@ -69,6 +69,9 @@ void Player::update(float DeltaTime) {
         }
     }
 }
+SDL_Rect Player::GetRect() const {
+    return rect;
+}
 
 void Player::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, texture, NULL, &rect);

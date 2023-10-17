@@ -26,6 +26,7 @@ private:
 	std::list<Enemy> badGuys;
 	int lives = 3;
 	int score;
+	int destroyedEnemies = 0;
 
 public:
 

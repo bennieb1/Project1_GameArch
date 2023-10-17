@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="Astroid.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="json.cpp" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="Astroid.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="json.hpp" />
@@ -197,6 +199,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EnemyA.json" />
+    <None Include="EnemyB.json" />
+    <None Include="EnemyBulletA.JSON" />
     <None Include="meteorSmall.json" />
     <None Include="metorBig.json" />
     <None Include="player.json" />
