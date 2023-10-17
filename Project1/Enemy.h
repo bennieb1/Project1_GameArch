@@ -19,16 +19,16 @@ private:
     std::list<SDL_Rect> bulleta;
     std::string imagePath;
     std::string bulletTexture;
-    SDL_Renderer* renderer;
-    std::list<Enemy*> bullets;
+    SDL_Renderer* render;
+    std::list<EnemyBullet*> bullets;
     float speedY;
     int health;
     float positionX;
     float positionY;
     const int SCREEN_WIDTH = 1280;  
     const int SCREEN_HEIGHT = 720;
-    const int bulletSpeed = 10;
-    bool isBullet = false;
+    const int bulletSpeed;
+    bool isBullet;
   
 
 
@@ -43,8 +43,8 @@ public:
     bool isColliding(SDL_Rect centerA, SDL_Rect centerB);
     void TakeDamage(int damage);
      bool OnBulletHit();
-     void UpdateAndRenderBullets();
      void Shoot();
+     void RenderBullets(SDL_Renderer* renderer);
      void UpdatePositionRandomly(float deltaTime);
      
    void Load(const std::string& filepath) ;

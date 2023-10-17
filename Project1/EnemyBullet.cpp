@@ -2,17 +2,18 @@
 #include <iostream>
 
 
-EnemyBullet::EnemyBullet(SDL_Renderer* renderer, const std::string& bulletTexturePath, int x, int y) {
+EnemyBullet::EnemyBullet(SDL_Renderer* renderer, const std::string& bulletTexture, int x, int y) {
     
 
     IMG_Init(IMG_INIT_PNG);
    
+     Load(bulletTexture);
   
 	texture = IMG_LoadTexture(renderer, bulletTexturePath.c_str());
 
 
     if (!texture) {
-        std::cout << "Error loading bullet texture: " << SDL_GetError() << std::endl;
+        std::cout << "Error loading bullet textures: " << SDL_GetError() << std::endl;
         return;
     }
 

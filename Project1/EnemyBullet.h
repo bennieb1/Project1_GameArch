@@ -15,16 +15,17 @@ class EnemyBullet
 private:
 
 	SDL_Texture* texture;
-	SDL_Rect rect;
+	
 	std::string bulletTexture;
 	std::string bulletTexturePath;
-
+	SDL_Renderer* renderer;
 	float bulletSpeedX;
 	float bulletSpeedY;
 	int bulletWidth;
 	int bulletHeight;
 public:
-
+	bool isBullet;
+	SDL_Rect rect;
 	EnemyBullet(SDL_Renderer* renderer, const std::string& texturePath, int x, int y);
 	~EnemyBullet();
 

@@ -35,7 +35,7 @@ Game::~Game() {
     for (auto& enemy : enemies) {
         delete enemy;
     }
-    SDL_DestroyRenderer(render);
+   SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
     IMG_Quit();
     SDL_Quit();
@@ -51,6 +51,8 @@ void Game::Render() {
 
     for (auto& e : enemies) {
         e->Render(render);
+       // e->Render(render); // This renders the enemy
+        e->Shoot();
     }
 
 
@@ -167,12 +169,13 @@ void Game::Update(float DeltaTime) {
     for (auto& enemy : enemies) {
         enemy->Render(render); // This renders the enemy
         enemy->Shoot();
-        enemy->UpdateAndRenderBullets(); // This updates and renders the bullets for each enemy
+        // This updates and renders the bullets for each enemy
     }
    
     for (auto& enemy : enemies) {
         enemy->UpdatePositionRandomly(DeltaTime);
         // Check collisions and other logic specific to each enemy
+      
     }
 
 

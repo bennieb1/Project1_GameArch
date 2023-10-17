@@ -2,8 +2,11 @@
 
 
 
-Enemy::Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHealth)  {
+Enemy::Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHealth)
+    :  isBullet(false), bulletSpeed(-500) {
     health = initHealth;
+
+
 
     IMG_Init(IMG_INIT_PNG);
     // Load the enemy texture
@@ -17,6 +20,8 @@ Enemy::Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHea
     if (!bullet) {
         SDL_Log("Failed to load bullet texture: %s", IMG_GetError());
     }
+    render = renderer;
+    std::cout << bulletTexture.c_str() << std::endl;
 
     SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 
@@ -36,9 +41,7 @@ Enemy::~Enemy() {
 void Enemy::Render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, texture, NULL, &rect);
 
-    for (const auto& bulletRect : bulleta) {
-        SDL_RenderCopy(renderer, bullet, NULL, &bulletRect);
-    }
+  
 }
 
 
@@ -74,35 +77,22 @@ bool Enemy::OnBulletHit()  {
     return false;
 }
 
+
+
 void Enemy::Shoot() {
-    int bulletStartX = rect.x + rect.w / 2; // Center of the enemy on X-axis
-    int bulletStartY = rect.y + rect.h;     // Bottom of the enemy, where bullet will start
-   // Enemy* newBullet = new Enemy(renderer, bulletTexture);
-   // bullets.push_back(newBullet);
+    EnemyBullet* newBullet = new EnemyBullet(render, "EnemyBulletA.JSON", 100,100); // 0 health because it's a bullet
+    newBullet->isBullet = true;
+    newBullet->rect.x = rect.x + rect.w / 2; // Start from the center of the enemy
+    newBullet->rect.y = rect.y;
+    bullets.push_back(newBullet);
 }
 
-void Enemy::Move(int distX, int distY) {
 
-    rect.x += distX;
-    rect.y += distY;
-
-}
-
-void Enemy::UpdateAndRenderBullets() {
-    for (auto it = bullets.begin(); it != bullets.end(); ) {
-        (*it)->Move(0, 5); // Move bullet downwards
-
-        if ((*it)->GetRect().y > SCREEN_HEIGHT) { // If the bullet is out of the screen
-            delete* it;
-            it = bullets.erase(it);
-        }
-        else {
-            (*it)->Render(renderer); // Render the bullet
-            ++it;
-        }
+void Enemy::RenderBullets(SDL_Renderer* renderer) {
+    for (EnemyBullet* bullet : bullets) {
+        bullet->Render(renderer); // Render each bullet
     }
 }
-
 
 SDL_Rect Enemy::GetRect() const {
     return rect;
