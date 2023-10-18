@@ -2,30 +2,47 @@
 
 Game::Game() {
     SDL_Init(SDL_INIT_VIDEO);
+    IMG_Init(IMG_INIT_PNG);
     if (TTF_Init() == -1) {
         SDL_Log("Unable to initialize SDL2_ttf: %s", TTF_GetError());
 
     }
+
 
     window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1240, 720, SDL_WINDOW_SHOWN);
     render = SDL_CreateRenderer(window, -1, 0);
 
     isrunning = true;
     lastFrameTime = SDL_GetTicks();
+
+    Load("BackGround.JSON");
+
+    std::cout << "file retrived:" << background << std::endl;
+
+    SDL_Surface* tempSurface = IMG_Load(background.c_str());
+    if (tempSurface == nullptr) {
+        SDL_Log("Unable to load image %s! SDL_image Error: %s\n", background.c_str(), IMG_GetError());
+        return;
+    }
+
+    backgroundTexture = SDL_CreateTextureFromSurface(render, tempSurface);
+    SDL_FreeSurface(tempSurface);
+
+
     gameU = new GameUI("resources\\Hud\\cour.ttf");
 
     player = new Player(render, "player.JSON");
 
-   // enemies.push_back(new Enemy(render, "EnemyA.JSON", 3));
-   // enemies.push_back(new Enemy(render, "EnemyB.JSON", 5));
 
     Enemy* newEnemy = new Enemy(render, "EnemyA.JSON", 3 );
     newEnemy->SetRandomTopPosition();
     enemies.push_back(newEnemy);
+    newEnemy->setBulletsList(bullets);
 
     Enemy* newerEnemy = new Enemy(render, "EnemyB.JSON", 5 );
     newerEnemy->SetRandomTopPosition();
     enemies.push_back(newerEnemy);
+    newerEnemy->setBulletsList(bullets);
 }
 Game::~Game() {
 
@@ -43,15 +60,22 @@ Game::~Game() {
 void Game::Render() {
     SDL_RenderClear(render);
 
+
+    
+        SDL_RenderCopy(render, backgroundTexture, NULL, NULL);
+   
+
     player->render(render);
 
     for (auto& asteroid : astroids) {
         asteroid->Render(render);
     }
 
+
     for (auto& e : enemies) {
         e->Render(render);
-       // e->Render(render); // This renders the enemy
+   
+        e->RenderBullets(render);
         e->Shoot();
     }
 
@@ -72,12 +96,19 @@ void Game::run() {
 
         if (currentFrameTime >= nextSpawnTime) {
             spawnAsteroid();
-            nextSpawnTime = currentFrameTime + 2000;  // Schedule the next spawn in 5 seconds
+            nextSpawnTime = currentFrameTime + 2000;  
         }
         handledEvents();
         Update(deltaTime);
         Render();
-       // SpawnEnemy();
+       
+        gatherEnemyBullets();
+
+
+        for (auto& enemy : enemies) {
+            enemy->UpdateBullets(deltaTime);
+            enemy->RenderBullets(render);
+        }
 
 
         lastFrameTime = currentFrameTime;
@@ -115,17 +146,19 @@ void Game::spawnAsteroid() {
 
 }
 
-//void Game::SpawnEnemy() {
-//
-//    Enemy* newEnemy = new Enemy(render, "EnemyA.JSON", 3);
-//    newEnemy->SetRandomTopPosition();
-//    enemies.push_back(newEnemy);
-//
-//    Enemy* newerEnemy = new Enemy(render, "EnemyB.JSON", 5);
-//    newerEnemy->SetRandomTopPosition();
-//    enemies.push_back(newerEnemy);
-//
-//}
+
+
+
+void Game::gatherEnemyBullets()
+{
+    for (auto enemy : enemies)
+    {
+        std::list<EnemyBullet*> enemyBullets = enemy->getBullets();
+        bullets.insert(bullets.end(), enemyBullets.begin(), enemyBullets.end());
+    }
+}
+
+
 
 void Game::scoreAdded(int earned) {
 
@@ -137,9 +170,9 @@ void Game::lifeLost(int livesLost) {
 
     lives -= livesLost;
     if (lives <= 0) {
-        lives = 3; // This will reset the game every time. You may want a game over state.
-        score = 0;  // Reset score to 0
-        gameU->setScore(score); // ... rest of your code ...
+        lives = 3;
+        score = 0;  
+        gameU->setScore(score); 
     }
     player->Destroy();
 
@@ -153,39 +186,39 @@ void Game::Update(float DeltaTime) {
     for (auto it = astroids.begin(); it != astroids.end();) {
         if (isColliding(player->rect, (*it)->GetRect()) && !player->invulnerable) {
             std::cout << "Collision detected!" << std::endl;
+
+            player->StartFlashing();
             lifeLost(1);
             player->setInvulnerable();
             delete* it;
-            it = astroids.erase(it);  // Remove the asteroid from the list
-            break;  // Exit the loop after handling the collision
+            it = astroids.erase(it); 
+            break;  
         }
         else {
             ++it;
         }
     }
 
-   
+
 
     for (auto& enemy : enemies) {
-        enemy->Render(render); // This renders the enemy
-        enemy->Shoot();
-        // This updates and renders the bullets for each enemy
-    }
-   
-    for (auto& enemy : enemies) {
         enemy->UpdatePositionRandomly(DeltaTime);
-        // Check collisions and other logic specific to each enemy
-      
+    
+        enemy->Render(render);
+        enemy->UpdateBullets(DeltaTime);
+        enemy->RenderBullets(render);
+        enemy->Shoot();
     }
 
 
     for (auto& bullet : player->bullet) {
         for (auto it = astroids.begin(); it != astroids.end();) {
             if (isColliding(bullet, (*it)->GetRect())) {
-                // Bullet hits asteroid
-                scoreAdded(10);  // 10 points for each asteroid hit
+               
+               
+                scoreAdded(10);
                 delete* it;  // Free the asteroid's memory
-                it = astroids.erase(it);  // Remove the asteroid from the list
+                it = astroids.erase(it);
             }
             else {
                 ++it;
@@ -196,6 +229,21 @@ void Game::Update(float DeltaTime) {
         asteroid->Update(DeltaTime);
     }
 
+
+
+    for (auto bulletss = bullets.begin(); bulletss != bullets.end(); ++bulletss) {
+        if ((*bulletss)->active && !(*bulletss)->hasAlreadyCollided()) {
+            if (isColliding(player->GetRect(), (*bulletss)->GetRect())) {
+                std::cout << "Collision detected!" << std::endl;
+                lifeLost(1);
+                player->StartFlashing();
+               // player->setInvulnerable();
+                (*bulletss)->collided();
+                (*bulletss)->active = false;
+            }
+        }
+    }
+
     for (auto bulletIt = player->bullet.begin(); bulletIt != player->bullet.end(); ) {
         bool bulletDeleted = false;
 
@@ -204,7 +252,7 @@ void Game::Update(float DeltaTime) {
                 bool isEnemyDestroyed = (*enemyIt)->OnBulletHit();
                 bulletIt = player->bullet.erase(bulletIt);
                 bulletDeleted = true;
-
+               // player->StartFlashing();
                 if (isEnemyDestroyed) {
                     scoreAdded(50);
                     delete* enemyIt;  // Delete the enemy
@@ -214,7 +262,7 @@ void Game::Update(float DeltaTime) {
                 else {
                     ++enemyIt;
                 }
-                break;  // break out of the enemy loop if a bullet hit an enemy
+                break;
             }
             else {
                 ++enemyIt;
@@ -226,13 +274,14 @@ void Game::Update(float DeltaTime) {
         }
     }
 
-    // Then, check collisions between player and enemies
+
     for (auto enemyIt = enemies.begin(); enemyIt != enemies.end(); ) {
         if (isColliding(player->GetRect(), (*enemyIt)->GetRect())) {
-            // Handle the collision. This could be player health decrease, game over logic, etc.
+
             lifeLost(1);
             scoreAdded(50);
-
+            player->StartFlashing();
+            player->setInvulnerable();
             delete* enemyIt;
             enemyIt = enemies.erase(enemyIt);
             destroyedEnemies++;
@@ -242,13 +291,13 @@ void Game::Update(float DeltaTime) {
         }
     }
 
-    // Finally, check if 2 enemies have been destroyed and respawn new ones
+
     if (destroyedEnemies == 2) {
-        // Reset the counter
+
         destroyedEnemies = 0;
 
-        // Spawn 2 new enemies
-        Enemy* newEnemy1 = new Enemy(render, "EnemyA.JSON", 3 );
+
+        Enemy* newEnemy1 = new Enemy(render, "EnemyA.JSON", 3);
         newEnemy1->SetRandomTopPosition();
         enemies.push_back(newEnemy1);
 
@@ -257,13 +306,10 @@ void Game::Update(float DeltaTime) {
         enemies.push_back(newEnemy2);
     }
 
-
-
-  
 }
 
 bool Game::isColliding(SDL_Rect centerA, SDL_Rect centerB) {
-    float distx = centerA.x + centerA.w / 2 - (centerB.x + centerB.w / 2);  // Adjusting to get the center of rects
+    float distx = centerA.x + centerA.w / 2 - (centerB.x + centerB.w / 2);  
     float disty = centerA.y + centerA.h / 2 - (centerB.y + centerB.h / 2);
     float distance = sqrt(distx * distx + disty * disty);
 
@@ -272,8 +318,21 @@ bool Game::isColliding(SDL_Rect centerA, SDL_Rect centerB) {
 
     return distance <= (radiusA + radiusB);
 }
+
+void Game::Load(const std::string& filepath) {
+
+    std::ifstream inputStream(filepath);
+    std::string str((std::istreambuf_iterator<char>(inputStream)), std::istreambuf_iterator<char>());
+    json::JSON document = json::JSON::Load(str);
+
+    background = document["background_path"].ToString();
+
+
+}
+
 void Game::Destroy() {
     delete player;
+    delete astroid;
     SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
     IMG_Quit();

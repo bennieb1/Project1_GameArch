@@ -22,6 +22,10 @@ private:
     SDL_Texture* bullets;
     std::string imagePath;
     std::string bulletTexture;
+    bool isFlashing = false;
+    float flashTime = 0.0f;
+    const float flashDuration = 1.0f; // Example: 1 second of flashing
+    const float flashInterval = 0.1f;
   
 
 public:
@@ -38,6 +42,7 @@ public:
     SDL_Rect GetRect() const;
     void render(SDL_Renderer* renderer);
     bool isActive() const;
+    void StartFlashing();
     void setInvulnerable();
     void Load(const std::string& filepath);
     void Destroy();

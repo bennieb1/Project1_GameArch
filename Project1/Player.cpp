@@ -68,13 +68,24 @@ void Player::update(float DeltaTime) {
             invulnerabilityTime = 0;
         }
     }
+
+    if (isFlashing) {
+        flashTime -= DeltaTime;
+        if (flashTime <= 0.0f) {
+            isFlashing = false;
+        }
+    }
 }
 SDL_Rect Player::GetRect() const {
     return rect;
 }
 
 void Player::render(SDL_Renderer* renderer) {
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+  
+
+    if (!isFlashing || (int)(flashTime / flashInterval) % 2 == 0) {
+        SDL_RenderCopy(renderer, texture, NULL, &rect);
+    }
 
     for (const auto& bulletRect : bullet) {
         SDL_RenderCopy(renderer, bullets, NULL, &bulletRect);
@@ -84,6 +95,14 @@ void Player::render(SDL_Renderer* renderer) {
 bool Player::isActive() const {
 
     return active;
+}
+
+void Player::StartFlashing() {
+
+    isFlashing = true;
+    flashTime = flashDuration;
+
+
 }
 
 void Player::setInvulnerable() {

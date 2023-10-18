@@ -20,21 +20,34 @@ private:
     std::string imagePath;
     std::string bulletTexture;
     SDL_Renderer* render;
-    std::list<EnemyBullet*> bullets;
+   // std::list<EnemyBullet*> bullets;
+    std::list<Enemy*>enemy;
+    std::list<EnemyBullet*>* bulletss = nullptr;
     float speedY;
     int health;
     float positionX;
     float positionY;
+    float x;
+    float y;
     const int SCREEN_WIDTH = 1280;  
     const int SCREEN_HEIGHT = 720;
     const int bulletSpeed;
-    bool isBullet;
+    bool isBullet = true;
+    Uint32 lastBulletShotTime = 0;
+    Uint32 bulletCooldown = 1500; // 1 second cooldown
+
   
 
 
 public:
     Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHealth = 100);
     ~Enemy();
+   std::list<EnemyBullet*> bullets;
+    /*int bulletWidth;
+    int bulletHeight;*/
+    float posY;
+    float posX;
+    float speed;
 
     void Update(float deltaTime);
     void Render(SDL_Renderer* renderer);
@@ -45,8 +58,11 @@ public:
      bool OnBulletHit();
      void Shoot();
      void RenderBullets(SDL_Renderer* renderer);
+     void setBulletsList(std::list<EnemyBullet*>& gameBullets);
+     void UpdatePosition(float deltaTime);
+     void UpdateBullets(float deltaTime);
      void UpdatePositionRandomly(float deltaTime);
-     
+     std::list<EnemyBullet*>& getBullets();
    void Load(const std::string& filepath) ;
     SDL_Rect GetRect() const;
 

@@ -164,5 +164,7 @@
     <None Include="EnemyA.json" />
     <None Include="EnemyB.json" />
     <None Include="EnemyBulletA.JSON" />
+    <None Include="EnemyBulletB.json" />
+    <None Include="BackGround.json" />
   </ItemGroup>
 </Project>

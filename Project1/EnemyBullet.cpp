@@ -2,7 +2,9 @@
 #include <iostream>
 
 
-EnemyBullet::EnemyBullet(SDL_Renderer* renderer, const std::string& bulletTexture, int x, int y) {
+EnemyBullet::EnemyBullet(SDL_Renderer* renderer, const std::string& bulletTexture, int x, int y)
+    : posX(x), posY(y), hasCollided(false) {
+    
     
 
     IMG_Init(IMG_INIT_PNG);
@@ -20,8 +22,8 @@ EnemyBullet::EnemyBullet(SDL_Renderer* renderer, const std::string& bulletTextur
     SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 
 
-    rect.x = x - rect.w / 2; // So the bullet appears centered on x
-    rect.y = y;
+    rect.x = posX;
+    rect.y = posY;
 }
 
 EnemyBullet::~EnemyBullet() {
@@ -39,9 +41,26 @@ void EnemyBullet::Move(int distX, int distY) {
 
 }
 
+void EnemyBullet::UpdatePosition(float deltaTime) {
+    posY += speed * deltaTime;
+    rect.y = posY;
+}
+
+void EnemyBullet::collided() {
+
+    hasCollided = true;
+
+}
+
+bool EnemyBullet::hasAlreadyCollided() const {
+    return hasCollided;
+}
+
 void EnemyBullet::Render(SDL_Renderer* renderer) {
 
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_Rect dstRect = { (int)posX, (int)posY, BULLET_WIDTH, BULLET_HEIGHT };
+
+    SDL_RenderCopy(renderer, texture, NULL, &dstRect);
 
 
 }
@@ -60,5 +79,7 @@ void EnemyBullet::Load(const std::string& filepath) {
     bulletSpeedY = document["speed"]["y"].ToFloat();
     bulletWidth = document["size"]["width"].ToInt();
     bulletHeight = document["size"]["height"].ToInt();
+
+    speed = bulletSpeedY;
 
 }

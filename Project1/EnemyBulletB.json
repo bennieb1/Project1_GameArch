@@ -1,0 +1,11 @@
+{
+    "bullet_texture": "resources\\Enemies\\laserRedShot.png",
+    "speed": {
+        "x": 0.0,
+        "y": 150.0
+    },
+    "size": {
+      "width": 50,
+      "height": 5
+    }
+}

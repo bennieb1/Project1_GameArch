@@ -15,6 +15,8 @@ private:
 
 	SDL_Window* window;
 	SDL_Renderer* render;
+	SDL_Texture* backgroundTexture;
+	std::string background;
 	std::list<Astroid*> astroids;
 	bool isrunning = true;
 	Uint32 lastFrameTime;
@@ -23,7 +25,7 @@ private:
 	Player* player;
 	Enemy* enemy;
 	std::list<Enemy*> enemies;
-	std::list<Enemy> badGuys;
+	std::list<EnemyBullet*> bullets;
 	int lives = 3;
 	int score;
 	int destroyedEnemies = 0;
@@ -36,11 +38,12 @@ public:
 	void Render();
 	void handledEvents();
 	void spawnAsteroid();
-	void SpawnEnemy();
+	void gatherEnemyBullets();
 	void scoreAdded(int earned);
 	void lifeLost(int lives);
 	void Update(float DeltaTime);
 	bool isColliding(SDL_Rect a, SDL_Rect b);
+	void Load(const std::string& filepath);
 	void Destroy();
 };
 

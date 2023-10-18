@@ -10,6 +10,5 @@
         },
         "lives": 5,
         "speed": 10,
-        "image_path": "resources\\Enemies\\enemyUFO.png",
-        "bullet_texture": "resources\\Enemies\\laserRed.png"
-      }
+        "image_path": "resources\\Enemies\\enemyUFO.png"
+     }

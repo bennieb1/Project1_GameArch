@@ -198,9 +198,11 @@
     <Font Include="resources\Hud\couri.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BackGround.json" />
     <None Include="EnemyA.json" />
     <None Include="EnemyB.json" />
     <None Include="EnemyBulletA.JSON" />
+    <None Include="EnemyBulletB.json" />
     <None Include="meteorSmall.json" />
     <None Include="metorBig.json" />
     <None Include="player.json" />

@@ -15,20 +15,29 @@ class EnemyBullet
 private:
 
 	SDL_Texture* texture;
-	
-	std::string bulletTexture;
 	std::string bulletTexturePath;
 	SDL_Renderer* renderer;
 	float bulletSpeedX;
 	float bulletSpeedY;
-	int bulletWidth;
-	int bulletHeight;
+	float BULLET_HEIGHT = 10.0f;
+	float BULLET_WIDTH = 10.0f;
+	bool hasCollided;
+
 public:
+	bool active = true;
+	float bulletWidth;
+	float bulletHeight;
 	bool isBullet;
 	SDL_Rect rect;
+	float posY;
+	float posX;
+	float speed;
+
+	void collided();
+	bool hasAlreadyCollided() const;
 	EnemyBullet(SDL_Renderer* renderer, const std::string& texturePath, int x, int y);
 	~EnemyBullet();
-
+	void UpdatePosition(float deltaTime);
 	void Move(int distX, int distY);
 	void Render(SDL_Renderer* rend);
 	SDL_Rect GetRect() const;
