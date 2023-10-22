@@ -1,11 +1,14 @@
 #include "EnemyBullet.h"
 #include <iostream>
 
+int EnemyBullet::nextID = 0;
 
 EnemyBullet::EnemyBullet(SDL_Renderer* renderer, const std::string& bulletTexture, int x, int y)
     : posX(x), posY(y), hasCollided(false) {
+   
     
-    
+    id = nextID++;
+   
 
     IMG_Init(IMG_INIT_PNG);
    
@@ -46,6 +49,11 @@ void EnemyBullet::UpdatePosition(float deltaTime) {
     rect.y = posY;
 }
 
+int EnemyBullet::getID() const {
+    
+
+    return id; }
+
 void EnemyBullet::collided() {
 
     hasCollided = true;
@@ -59,9 +67,12 @@ bool EnemyBullet::hasAlreadyCollided() const {
 void EnemyBullet::Render(SDL_Renderer* renderer) {
 
     SDL_Rect dstRect = { (int)posX, (int)posY, BULLET_WIDTH, BULLET_HEIGHT };
-
-    SDL_RenderCopy(renderer, texture, NULL, &dstRect);
-
+    try {
+        SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+    }
+    catch(const char* e){
+        std::cout << "Caught an exception: " << e << std::endl;
+    }
 
 }
 

@@ -16,12 +16,14 @@ private:
 
 	SDL_Texture* texture;
 	std::string bulletTexturePath;
-	SDL_Renderer* renderer;
+	SDL_Renderer* render;
 	float bulletSpeedX;
 	float bulletSpeedY;
 	float BULLET_HEIGHT = 10.0f;
 	float BULLET_WIDTH = 10.0f;
 	bool hasCollided;
+	static int nextID;  // This will be our ID generator
+	int id;
 
 public:
 	bool active = true;
@@ -38,6 +40,7 @@ public:
 	EnemyBullet(SDL_Renderer* renderer, const std::string& texturePath, int x, int y);
 	~EnemyBullet();
 	void UpdatePosition(float deltaTime);
+	int getID() const;
 	void Move(int distX, int distY);
 	void Render(SDL_Renderer* rend);
 	SDL_Rect GetRect() const;

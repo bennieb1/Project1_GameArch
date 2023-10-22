@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Game.h"
 
 
 
@@ -9,7 +10,6 @@ Enemy::Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHea
  
 
 
-  
 
     IMG_Init(IMG_INIT_PNG);
   
@@ -36,6 +36,14 @@ Enemy::~Enemy() {
     delete bullet;
 }
 
+
+
+
+void Enemy::Update(float DeltaTime) {
+
+
+}
+
 void Enemy::Render(SDL_Renderer* renderer) {
    
   
@@ -45,8 +53,6 @@ void Enemy::Render(SDL_Renderer* renderer) {
     
   
 }
-
-
 
 
 bool Enemy::isColliding(SDL_Rect centerA, SDL_Rect centerB) {

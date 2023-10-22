@@ -26,6 +26,7 @@ private:
 	Enemy* enemy;
 	std::list<Enemy*> enemies;
 	std::list<EnemyBullet*> bullets;
+	std::list<int> bulletsToDelete;
 	int lives = 3;
 	int score;
 	int destroyedEnemies = 0;
@@ -40,7 +41,7 @@ public:
 	void spawnAsteroid();
 	void gatherEnemyBullets();
 	void scoreAdded(int earned);
-	void lifeLost(int lives);
+	 void lifeLost(int lives);
 	void Update(float DeltaTime);
 	bool isColliding(SDL_Rect a, SDL_Rect b);
 	void Load(const std::string& filepath);

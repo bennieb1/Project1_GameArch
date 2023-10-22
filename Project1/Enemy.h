@@ -35,6 +35,7 @@ private:
     bool isBullet = true;
     Uint32 lastBulletShotTime = 0;
     Uint32 bulletCooldown = 1500; // 1 second cooldown
+    std::list<int> bulletsToDelete;
 
   
 
@@ -43,15 +44,12 @@ public:
     Enemy(SDL_Renderer* renderer, const std::string& texturePath, int initHealth = 100);
     ~Enemy();
    std::list<EnemyBullet*> bullets;
-    /*int bulletWidth;
-    int bulletHeight;*/
     float posY;
     float posX;
     float speed;
 
     void Update(float deltaTime);
     void Render(SDL_Renderer* renderer);
-    void Move(int distX, int distY);
     void SetRandomTopPosition();
     bool isColliding(SDL_Rect centerA, SDL_Rect centerB);
     void TakeDamage(int damage);
@@ -66,8 +64,6 @@ public:
    void Load(const std::string& filepath) ;
     SDL_Rect GetRect() const;
 
-private:
-    bool LoadTexture(SDL_Renderer* renderer, const std::string& filepath);
 };
 
 #endif

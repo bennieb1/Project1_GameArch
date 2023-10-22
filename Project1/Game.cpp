@@ -34,12 +34,12 @@ Game::Game() {
     player = new Player(render, "player.JSON");
 
 
-    Enemy* newEnemy = new Enemy(render, "EnemyA.JSON", 3 );
+    Enemy* newEnemy = new Enemy(render, "EnemyA.JSON", 3);
     newEnemy->SetRandomTopPosition();
     enemies.push_back(newEnemy);
     newEnemy->setBulletsList(bullets);
 
-    Enemy* newerEnemy = new Enemy(render, "EnemyB.JSON", 5 );
+    Enemy* newerEnemy = new Enemy(render, "EnemyB.JSON", 5);
     newerEnemy->SetRandomTopPosition();
     enemies.push_back(newerEnemy);
     newerEnemy->setBulletsList(bullets);
@@ -52,7 +52,10 @@ Game::~Game() {
     for (auto& enemy : enemies) {
         delete enemy;
     }
-   SDL_DestroyRenderer(render);
+    for (auto& asteroid : astroids) {
+        delete asteroid;
+    }
+    SDL_DestroyRenderer(render);
     SDL_DestroyWindow(window);
     IMG_Quit();
     SDL_Quit();
@@ -61,9 +64,9 @@ void Game::Render() {
     SDL_RenderClear(render);
 
 
-    
-        SDL_RenderCopy(render, backgroundTexture, NULL, NULL);
-   
+
+    SDL_RenderCopy(render, backgroundTexture, NULL, NULL);
+
 
     player->render(render);
 
@@ -74,7 +77,7 @@ void Game::Render() {
 
     for (auto& e : enemies) {
         e->Render(render);
-   
+
         e->RenderBullets(render);
         e->Shoot();
     }
@@ -96,12 +99,12 @@ void Game::run() {
 
         if (currentFrameTime >= nextSpawnTime) {
             spawnAsteroid();
-            nextSpawnTime = currentFrameTime + 2000;  
+            nextSpawnTime = currentFrameTime + 2000;
         }
         handledEvents();
         Update(deltaTime);
         Render();
-       
+
         gatherEnemyBullets();
 
 
@@ -171,8 +174,8 @@ void Game::lifeLost(int livesLost) {
     lives -= livesLost;
     if (lives <= 0) {
         lives = 3;
-        score = 0;  
-        gameU->setScore(score); 
+        score = 0;
+        gameU->setScore(score);
     }
     player->Destroy();
 
@@ -191,8 +194,8 @@ void Game::Update(float DeltaTime) {
             lifeLost(1);
             player->setInvulnerable();
             delete* it;
-            it = astroids.erase(it); 
-            break;  
+            it = astroids.erase(it);
+            break;
         }
         else {
             ++it;
@@ -203,7 +206,7 @@ void Game::Update(float DeltaTime) {
 
     for (auto& enemy : enemies) {
         enemy->UpdatePositionRandomly(DeltaTime);
-    
+
         enemy->Render(render);
         enemy->UpdateBullets(DeltaTime);
         enemy->RenderBullets(render);
@@ -214,8 +217,8 @@ void Game::Update(float DeltaTime) {
     for (auto& bullet : player->bullet) {
         for (auto it = astroids.begin(); it != astroids.end();) {
             if (isColliding(bullet, (*it)->GetRect())) {
-               
-               
+
+
                 scoreAdded(10);
                 delete* it;  // Free the asteroid's memory
                 it = astroids.erase(it);
@@ -237,7 +240,7 @@ void Game::Update(float DeltaTime) {
                 std::cout << "Collision detected!" << std::endl;
                 lifeLost(1);
                 player->StartFlashing();
-               // player->setInvulnerable();
+                // player->setInvulnerable();
                 (*bulletss)->collided();
                 (*bulletss)->active = false;
             }
@@ -252,10 +255,10 @@ void Game::Update(float DeltaTime) {
                 bool isEnemyDestroyed = (*enemyIt)->OnBulletHit();
                 bulletIt = player->bullet.erase(bulletIt);
                 bulletDeleted = true;
-               // player->StartFlashing();
+                // player->StartFlashing();
                 if (isEnemyDestroyed) {
                     scoreAdded(50);
-                    delete* enemyIt;  // Delete the enemy
+                    delete* enemyIt;  
                     enemyIt = enemies.erase(enemyIt);
                     destroyedEnemies++;
                 }
@@ -309,7 +312,7 @@ void Game::Update(float DeltaTime) {
 }
 
 bool Game::isColliding(SDL_Rect centerA, SDL_Rect centerB) {
-    float distx = centerA.x + centerA.w / 2 - (centerB.x + centerB.w / 2);  
+    float distx = centerA.x + centerA.w / 2 - (centerB.x + centerB.w / 2);
     float disty = centerA.y + centerA.h / 2 - (centerB.y + centerB.h / 2);
     float distance = sqrt(distx * distx + disty * disty);
 
